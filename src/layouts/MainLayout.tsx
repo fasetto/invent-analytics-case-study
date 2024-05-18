@@ -5,9 +5,11 @@ const styles = tv({
   slots: {
     base: [
       "text-foreground bg-background",
-      "flex flex-col items-center h-[100dvh]",
+      "flex flex-col items-center",
+      "overflow-auto [scrollbar-gutter:stable]",
+      "pb-16",
     ],
-    title: "text-4xl font-bold mt-4",
+    title: "text-4xl font-bold my-9",
   },
 });
 
