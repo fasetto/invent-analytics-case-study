@@ -12,7 +12,10 @@ import type { Movie, MovieType } from ".";
 
 const styles = tv({
   slots: {
-    card: "py-4 max-w-[294px] relative",
+    card: [
+      "py-4 max-w-[294px] relative",
+      "data-[busy=true]:opacity-65 data-[busy=true]:animate-pulse",
+    ],
     cardHeader: ["pb-0 pt-2 px-4 flex-col gap-2 items-start"],
     cardBody: "overflow-visible py-2",
     cardImage: "object-cover rounded-xl aspect-[300/444] w-full",
@@ -50,11 +53,13 @@ const movieTypeToChip: Record<MovieType, React.ReactNode> = {
 
 interface Props extends Movie {
   className?: string;
+  isBusy?: boolean;
 }
 
 export default function MovieCard(props: Props) {
   return (
     <Card
+      data-busy={props.isBusy}
       className={card({ className: props.className })}
       isPressable
       isFooterBlurred
