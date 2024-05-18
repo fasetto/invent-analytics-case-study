@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import store from "./store";
 import { MainLayout } from "./layouts";
-import { ErrorPage, Home } from "./pages";
+import { ErrorPage, Home, MovieDetailsPage } from "./pages";
 
 import "./styles/global.css";
 
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "/movies/:id",
+        element: <MovieDetailsPage />,
       },
     ],
   },

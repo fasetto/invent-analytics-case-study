@@ -7,9 +7,8 @@ const styles = tv({
       "text-foreground bg-background",
       "flex flex-col items-center",
       "overflow-auto [scrollbar-gutter:stable]",
-      "pb-16",
     ],
-    title: "text-4xl font-bold my-9",
+    title: "text-3xl md:text-4xl font-bold my-9",
   },
 });
 

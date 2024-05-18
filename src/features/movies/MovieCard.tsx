@@ -8,7 +8,8 @@ import {
   Image,
 } from "@nextui-org/react";
 
-import type { Movie, MovieType } from ".";
+import type { Movie } from ".";
+import { movieTypeToChip } from "./constants";
 
 const styles = tv({
   slots: {
@@ -28,32 +29,10 @@ const styles = tv({
 const { card, cardHeader, cardBody, cardImage, title, details, imdbId } =
   styles();
 
-const movieTypeToChip: Record<MovieType, React.ReactNode> = {
-  movie: (
-    <Chip variant="flat" color="primary">
-      Movie
-    </Chip>
-  ),
-  series: (
-    <Chip variant="flat" color="secondary">
-      Series
-    </Chip>
-  ),
-  episode: (
-    <Chip variant="flat" color="danger">
-      Episode
-    </Chip>
-  ),
-  game: (
-    <Chip variant="flat" color="warning">
-      Game
-    </Chip>
-  ),
-};
-
 interface Props extends Movie {
   className?: string;
   isBusy?: boolean;
+  onClick?: () => void;
 }
 
 export default function MovieCard(props: Props) {
@@ -61,6 +40,7 @@ export default function MovieCard(props: Props) {
     <Card
       data-busy={props.isBusy}
       className={card({ className: props.className })}
+      onPress={props.onClick}
       isPressable
       isFooterBlurred
     >
@@ -81,7 +61,7 @@ export default function MovieCard(props: Props) {
           <Divider orientation="vertical" />
 
           {movieTypeToChip?.[props.Type] || (
-            <Chip variant="flat" className="capitalize">
+            <Chip variant="flat" className="capitalize" radius="sm">
               {props.Type}
             </Chip>
           )}

@@ -11,11 +11,11 @@ export interface Movie {
 
 export interface MovieDetails extends Movie {
   imdbRating: string;
-  Country: string;
   Plot: string;
   Genre: string;
+  Director: string;
+  Actors: string;
   Runtime: string;
-  Released: string;
 }
 
 export type MovieType = (typeof movieTypes)[number];

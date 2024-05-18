@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { Movie, MovieType } from ".";
+import type { Movie, MovieDetails, MovieType } from ".";
 
 type State = {
   data: Movie[];
+  movieDetails?: MovieDetails;
   pagination: {
     page: number;
     itemsPerPage: number;
@@ -80,6 +81,12 @@ const moviesSlice = createSlice({
       };
 
       if (key === "search") state.filters.search = initialState.filters.search;
+    },
+    setMovieDetails: (state, action: PayloadAction<MovieDetails>) => {
+      state.movieDetails = action.payload;
+    },
+    unsetMovieDetails: (state) => {
+      state.movieDetails = undefined;
     },
   },
 });

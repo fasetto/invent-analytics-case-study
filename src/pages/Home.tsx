@@ -10,10 +10,11 @@ import {
 } from "../features/movies";
 import { useDebounce } from "../hooks";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useNavigate } from "react-router-dom";
 
 const styles = tv({
   slots: {
-    base: ["flex flex-col gap-2 container"],
+    base: ["flex flex-col gap-2 container pb-16"],
     movieList: [
       "grid gap-4 self-center mt-8",
       "grid-cols-1",
@@ -37,6 +38,7 @@ export default function Home() {
     pagination,
     data: movies,
   } = useAppSelector((state) => state.movies);
+  const navigate = useNavigate();
 
   const searchParams = new URLSearchParams({
     s: filters.search,
@@ -131,7 +133,12 @@ export default function Home() {
 
       <div className={movieList()}>
         {movies.map((movie) => (
-          <MovieCard key={movie.imdbID} isBusy={status === "busy"} {...movie} />
+          <MovieCard
+            key={movie.imdbID}
+            onClick={() => navigate(`/movies/${movie.imdbID}`)}
+            isBusy={status === "busy"}
+            {...movie}
+          />
         ))}
       </div>
 
