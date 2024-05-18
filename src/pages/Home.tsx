@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { tv } from "tailwind-variants";
-import { Input, Select, SelectItem } from "@nextui-org/react";
+import { Input, Pagination, Select, SelectItem } from "@nextui-org/react";
 
 import {
   MovieCard,
@@ -20,7 +20,10 @@ const styles = tv({
       "md:grid-cols-[repeat(2,minmax(0,max-content))]",
       "lg:grid-cols-[repeat(3,minmax(0,max-content))]",
     ],
-    filterStyles: "flex gap-3 mx-auto",
+    filterStyles: [
+      "flex flex-col gap-3 w-[294px] mx-auto",
+      "md:flex-row md:w-auto",
+    ],
   },
 });
 
@@ -131,6 +134,14 @@ export default function Home() {
           <MovieCard key={movie.imdbID} isBusy={status === "busy"} {...movie} />
         ))}
       </div>
+
+      <Pagination
+        size="lg"
+        className="self-center mt-5"
+        total={Math.ceil(pagination.total / pagination.itemsPerPage)}
+        page={pagination.page}
+        onChange={(page) => dispatch(movieActions.changePage(page))}
+      />
     </div>
   );
 }

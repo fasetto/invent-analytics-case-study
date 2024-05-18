@@ -59,6 +59,9 @@ const moviesSlice = createSlice({
     error: (state) => {
       state.status = "error";
     },
+    changePage: (state, action: PayloadAction<number>) => {
+      state.pagination.page = action.payload;
+    },
     applyFilters: (state, action: PayloadAction<ApplyFiltersPayload>) => {
       state.filters = {
         ...state.filters,
