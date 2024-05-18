@@ -1,30 +1,46 @@
-# React + TypeScript + Vite
+# The Movie Database
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Invent Analytics FE Developer Case. This project uses the [The OMDB API](https://www.omdbapi.com/) to display a list of movies and their details.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Use the node version specified in `.node-version`.
 
-## Expanding the ESLint configuration
+Project uses [pnpm](https://pnpm.io/) as package manager. If you don't have it installed, you can install it by running:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm install -g pnpm
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Install the dependencies:
+
+```bash
+pnpm install
+```
+
+Copy `.env.example` file to `.env.local` and add your API key:
+
+```bash
+cp .env.example .env.local
+```
+
+Run the development server:
+
+```bash
+pnpm dev
+```
+
+## Project Structure
+
+- `src/assets/` - Icons, etc.
+- `src/features/movies/` - Movies feature. Contains reducers, actions, components..
+- `src/hooks/`
+- `src/layouts/`
+- `src/pages/`
+- `src/store/` - Redux store
+
+## Screenshots
+
+<img src="./homepage.jpeg" alt="Home page" style="width: 576px" />
+
+<img src="./movie-details-page.jpeg" alt="Home page" style="width: 576px" />
