@@ -1,7 +1,15 @@
+import { useEffect } from "react";
 import { tv } from "tailwind-variants";
-import { MovieCard, movieTypes } from "../features/movies";
-import { useAppSelector } from "../store/hooks";
 import { Input, Select, SelectItem } from "@nextui-org/react";
+
+import {
+  MovieCard,
+  movieActions,
+  movieTypes,
+  type MovieType,
+} from "../features/movies";
+import { useDebounce } from "../hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 const styles = tv({
   slots: {
@@ -12,29 +20,89 @@ const styles = tv({
       "md:grid-cols-[repeat(2,minmax(0,max-content))]",
       "lg:grid-cols-[repeat(3,minmax(0,max-content))]",
     ],
-    filters: "flex gap-3 mx-auto",
+    filterStyles: "flex gap-3 mx-auto",
   },
 });
 
-const { base, movieList, filters } = styles();
+const { base, movieList, filterStyles } = styles();
 
 export default function Home() {
-  const movies = useAppSelector((state) => state.movies.data);
+  const dispatch = useAppDispatch();
+  const {
+    status,
+    filters,
+    pagination,
+    data: movies,
+  } = useAppSelector((state) => state.movies);
+
+  const searchParams = new URLSearchParams({
+    s: filters.search,
+    y: filters.year,
+    type: filters.type,
+    page: pagination.page.toString(),
+    apikey: import.meta.env.VITE_OMDB_API_KEY,
+  }).toString();
+
+  const deferredQuery = useDebounce(searchParams, 300);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
+
+    const loadMovies = async () => {
+      try {
+        dispatch(movieActions.loading());
+
+        const apiAddr = import.meta.env.VITE_OMDB_API_URL;
+        const url = new URL("?" + deferredQuery, apiAddr);
+        const response = await fetch(url, { signal });
+        const { Search: data, totalResults } = await response.json();
+
+        if (!data) {
+          throw new Error("No data found!");
+        }
+
+        dispatch(
+          movieActions.setData({
+            movies: data,
+            total: +totalResults,
+          })
+        );
+      } catch {
+        dispatch(movieActions.error());
+      }
+    };
+
+    loadMovies();
+
+    return () => {
+      abortController.abort();
+    };
+  }, [deferredQuery, dispatch]);
 
   return (
     <div className={base()}>
-      <div className={filters()}>
+      <div className={filterStyles()}>
         <Input
           className="w-[240px]"
           variant="bordered"
           label="Search for"
+          value={filters.search}
+          onValueChange={(value) =>
+            dispatch(movieActions.applyFilters({ search: value }))
+          }
+          onClear={() => dispatch(movieActions.clearFilter("search"))}
           isClearable
         />
         <Input
-          min={1800}
           className="w-[120px]"
           variant="bordered"
           label="Year"
+          value={filters.year}
+          onValueChange={(value) =>
+            dispatch(movieActions.applyFilters({ year: value }))
+          }
+          onClear={() => dispatch(movieActions.clearFilter("year"))}
           isClearable
         />
         <Select
@@ -43,6 +111,11 @@ export default function Home() {
             base: "w-[160px]",
             value: "capitalize",
             listbox: "capitalize",
+          }}
+          value={filters.type}
+          onChange={(e) => {
+            const value = e.target.value as MovieType;
+            dispatch(movieActions.applyFilters({ type: value }));
           }}
         >
           {movieTypes.map((name) => (
@@ -55,7 +128,7 @@ export default function Home() {
 
       <div className={movieList()}>
         {movies.map((movie) => (
-          <MovieCard key={movie.imdbID} {...movie} />
+          <MovieCard key={movie.imdbID} isBusy={status === "busy"} {...movie} />
         ))}
       </div>
     </div>
