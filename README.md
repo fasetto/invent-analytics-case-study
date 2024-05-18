@@ -41,6 +41,6 @@ pnpm dev
 
 ## Screenshots
 
-<img src="./homepage.jpeg" alt="Home page" style="width: 576px" />
+<img src="./homepage.jpeg" alt="Home page" style="width: 100%" />
 
-<img src="./movie-details-page.jpeg" alt="Home page" style="width: 576px" />
+<img src="./movie-details-page.jpeg" alt="Home page" style="width: 100%" />
