@@ -51,6 +51,10 @@ export default function Home() {
   const deferredQuery = useDebounce(searchParams, 300);
 
   useEffect(() => {
+    const searchKey = new URLSearchParams(deferredQuery).get("s");
+
+    if (searchKey === "") return;
+
     const abortController = new AbortController();
     const { signal } = abortController;
 
