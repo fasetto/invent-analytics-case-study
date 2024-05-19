@@ -68,9 +68,7 @@ const moviesSlice = createSlice({
         ...state.filters,
         ...action.payload,
       };
-
-      if (action.payload.search === "")
-        state.filters.search = initialState.filters.search;
+      state.pagination.page = 1;
     },
     clearFilter: (state, action: PayloadAction<FilterKeys>) => {
       const key = action.payload;
@@ -79,8 +77,6 @@ const moviesSlice = createSlice({
         ...state.filters,
         [key]: "",
       };
-
-      if (key === "search") state.filters.search = initialState.filters.search;
     },
     setMovieDetails: (state, action: PayloadAction<MovieDetails>) => {
       state.movieDetails = action.payload;
